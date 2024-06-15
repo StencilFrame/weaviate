@@ -12,12 +12,12 @@
 package clients
 
 import (
-	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/pkg/errors"
@@ -53,7 +53,8 @@ func (v *vectorizer) Vectorize(ctx context.Context,
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "POST", v.url("/vectorize", config.InferenceURL),
-		bytes.NewReader(body))
+		// bytes.NewReader(body))
+		strings.NewReader(string(body)))
 	if err != nil {
 		return nil, errors.Wrap(err, "create POST request")
 	}
