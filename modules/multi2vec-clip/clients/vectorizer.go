@@ -58,6 +58,9 @@ func (v *vectorizer) Vectorize(ctx context.Context,
 		return nil, errors.Wrap(err, "create POST request")
 	}
 
+	// The inference service expects the content type to be application/json
+	req.Header.Set("Content-Type", "application/json")
+
 	res, err := v.httpClient.Do(req)
 	if err != nil {
 		return nil, errors.Wrap(err, "send POST request")
