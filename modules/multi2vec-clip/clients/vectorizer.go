@@ -12,12 +12,12 @@
 package clients
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
-	"strings"
 	"time"
 
 	"github.com/pkg/errors"
@@ -53,15 +53,12 @@ func (v *vectorizer) Vectorize(ctx context.Context,
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "POST", v.url("/vectorize", config.InferenceURL),
-		// bytes.NewReader(body))
-		strings.NewReader(string(body)))
+		bytes.NewReader(body))
 	if err != nil {
 		return nil, errors.Wrap(err, "create POST request")
 	}
 
-	// The inference service expects the content type to be application/json
 	req.Header.Set("Content-Type", "application/json")
-	fmt.Println("req", req, "body", string(body))
 
 	res, err := v.httpClient.Do(req)
 	if err != nil {
@@ -98,8 +95,8 @@ func (v *vectorizer) url(path string, inferenceURL string) string {
 }
 
 type vecRequest struct {
-	Texts  []string `json:"texts"`
-	Images []string `json:"images"`
+	Texts  []string `json:"texts,omitempty"`
+	Images []string `json:"images,omitempty"`
 }
 
 type vecResponse struct {
