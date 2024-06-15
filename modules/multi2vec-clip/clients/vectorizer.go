@@ -60,7 +60,7 @@ func (v *vectorizer) Vectorize(ctx context.Context,
 
 	// The inference service expects the content type to be application/json
 	req.Header.Set("Content-Type", "application/json")
-	fmt.Println("req", req)
+	fmt.Println("req", req, "body", string(body))
 
 	res, err := v.httpClient.Do(req)
 	if err != nil {
